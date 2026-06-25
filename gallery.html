@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Work — Devansh Bhavsar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+    :root{
+      --bg:        #04050f;
+      --bg2:       #080a1a;
+      --surface:   #0d1022;
+      --surface2:  #111428;
+
+      --red:       #e8192c;
+      --red-light: #ff3347;
+      --red-dim:   #8a0f1a;
+      --red-glow:  rgba(232,25,44,.3);
+      --red-glow2: rgba(232,25,44,.12);
+
+      --blue:      #1565ff;
+      --blue-light:#4d8aff;
+      --blue-dim:  #0a3a99;
+      --blue-glow: rgba(21,101,255,.3);
+      --blue-glow2:rgba(21,101,255,.12);
+
+      --white:     #f0f4ff;
+      --silver:    #b8c4e0;
+      --silver-dim:#6678a0;
+      --border:    rgba(100,120,200,.15);
+      --border2:   rgba(232,25,44,.15);
+    }
+
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--silver);
+      font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;
+      overflow-x:hidden;cursor:none;}
+
+    /* GRID BG */
+    body::before{content:'';position:fixed;inset:0;
+      background-image:
+        linear-gradient(rgba(21,101,255,.03) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(21,101,255,.03) 1px,transparent 1px);
+      background-size:60px 60px;pointer-events:none;z-index:0;}
+
+    /* ORBS */
+    .orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(90px);animation:orbFloat 12s ease-in-out infinite;}
+    .orb-r{width:500px;height:500px;background:radial-gradient(circle,rgba(232,25,44,.15),transparent 70%);top:-120px;right:-180px;}
+    .orb-b{width:600px;height:600px;background:radial-gradient(circle,rgba(21,101,255,.12),transparent 70%);bottom:-220px;left:-220px;animation-delay:-6s;}
+    @keyframes orbFloat{0%,100%{transform:translate(0,0);}50%{transform:translate(25px,-35px);}}
+
+    /* PARTICLES */
+    #particles{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
+    .p-dot{position:absolute;border-radius:50%;animation:pFloat linear infinite;opacity:0;}
+    @keyframes pFloat{
+      0%{transform:translateY(105vh) rotate(0);opacity:0;}
+      8%{opacity:1;}85%{opacity:.4;}
+      100%{transform:translateY(-5vh) rotate(720deg);opacity:0;}
+    }
+
+    /* CURSOR */
+    #cursor{position:fixed;width:8px;height:8px;background:var(--red-light);border-radius:50%;
+      pointer-events:none;z-index:9999;transform:translate(-50%,-50%);
+      box-shadow:0 0 12px var(--red),0 0 28px var(--red-glow);}
+    #cursor-ring{position:fixed;width:38px;height:38px;border:1.5px solid rgba(21,101,255,.6);border-radius:50%;
+      pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s;}
+    body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring,body:has(.v-card:hover) #cursor-ring{width:56px;height:56px;border-color:var(--red-light);}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 48px;height:64px;
+      display:flex;justify-content:space-between;align-items:center;
+      background:rgba(4,5,15,.92);backdrop-filter:blur(24px);
+      border-bottom:1px solid var(--border);
+      box-shadow:0 1px 0 var(--border2),0 8px 32px rgba(0,0,0,.4);}
+
+    .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;animation:fadeDown .5s .05s both;}
+    .logo-mark{width:36px;height:36px;border-radius:8px;
+      background:linear-gradient(135deg,var(--red),var(--blue));
+      display:flex;align-items:center;justify-content:center;
+      font-size:12px;font-weight:900;color:#fff;letter-spacing:-.5px;
+      box-shadow:0 0 20px var(--red-glow2),0 0 20px var(--blue-glow2);flex-shrink:0;}
+    .nav-logo{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+      background:linear-gradient(90deg,var(--red-light),var(--blue-light));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+    .nav-back{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;
+      letter-spacing:.12em;text-transform:uppercase;color:var(--silver-dim);
+      text-decoration:none;transition:color .2s;animation:fadeDown .5s .2s both;}
+    .nav-back svg{transition:transform .2s;}
+    .nav-back:hover{color:var(--blue-light);}
+    .nav-back:hover svg{transform:translateX(-3px);}
+
+    /* PAGE HEADER */
+    #page-header{
+      padding:120px 48px 56px;
+      border-bottom:1px solid var(--border);
+      display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;
+      position:relative;overflow:hidden;
+    }
+    #page-header::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,rgba(232,25,44,.05) 0%,transparent 40%,rgba(21,101,255,.05) 60%,transparent 100%);
+    }
+    #page-header::after{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+      background:linear-gradient(90deg,transparent,var(--red),var(--blue),var(--red),transparent);
+      animation:accentLine 4s ease infinite;
+    }
+    @keyframes accentLine{0%,100%{opacity:.5;background-position:0%}50%{opacity:1;background-position:100%}}
+
+    .ph-left{opacity:0;animation:fadeUp .7s .2s forwards;position:relative;z-index:1;}
+    .ph-eyebrow{font-size:10px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;
+      color:var(--red-light);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+    .ph-eyebrow::before{content:'';display:inline-block;width:24px;height:2px;
+      background:linear-gradient(90deg,var(--red),var(--blue));border-radius:1px;}
+
+    h1{font-size:clamp(52px,9vw,120px);font-weight:900;line-height:.88;
+      letter-spacing:-.04em;
+      background:linear-gradient(135deg,var(--white) 0%,var(--blue-light) 40%,var(--red-light) 70%,var(--white) 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      background-size:300% 300%;animation:nameShimmer 5s ease infinite .4s;}
+    @keyframes nameShimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+    .ph-right{opacity:0;animation:fadeUp .7s .4s forwards;
+      font-size:13px;color:var(--silver-dim);line-height:1.75;max-width:280px;position:relative;z-index:1;}
+    .ph-right strong{color:var(--white);font-weight:700;}
+
+    /* FILTER BAR */
+    #filter-bar{padding:20px 48px;border-bottom:1px solid var(--border);
+      display:flex;gap:8px;flex-wrap:wrap;opacity:0;animation:fadeUp .5s .55s forwards;
+      background:linear-gradient(180deg,var(--bg),var(--bg2));}
+    .filter-btn{
+      padding:9px 20px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--silver-dim);background:transparent;
+      border:1.5px solid var(--border);cursor:pointer;transition:all .2s;border-radius:2px;
+      position:relative;overflow:hidden;
+    }
+    .filter-btn::before{content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,var(--red-glow2),var(--blue-glow2));
+      opacity:0;transition:opacity .2s;}
+    .filter-btn:hover{color:var(--white);border-color:var(--blue-light);}
+    .filter-btn:hover::before{opacity:1;}
+    .filter-btn.active{
+      background:linear-gradient(135deg,var(--red),var(--blue));
+      color:#fff;border-color:transparent;font-weight:700;
+      box-shadow:0 0 20px var(--red-glow2),0 0 20px var(--blue-glow2);}
+
+    /* SHIMMER DIVIDER */
+    .tri-divider{height:1px;
+      background:linear-gradient(90deg,transparent,var(--red-dim),var(--blue),var(--red-dim),transparent);
+      animation:shimDiv 4s ease infinite;}
+    @keyframes shimDiv{0%,100%{opacity:.4}50%{opacity:1}}
+
+    /* VIDEO GRID */
+    #gallery{
+      padding:36px 48px;
+      display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+      position:relative;z-index:1;
+    }
+
+    .v-card{
+      position:relative;overflow:hidden;background:var(--surface);cursor:pointer;
+      border-radius:4px;width:100%;aspect-ratio:9/16;
+      opacity:0;transform:translateY(28px) scale(.97);
+      transition:opacity .5s ease,transform .5s ease,box-shadow .35s;
+      border:1px solid var(--border);
+    }
+    .v-card.visible{opacity:1;transform:translateY(0) scale(1);}
+    .v-card.hidden{display:none!important;}
+
+    /* gradient border glow on hover */
+    .v-card::after{
+      content:'';position:absolute;inset:-1px;border-radius:4px;
+      background:linear-gradient(135deg,var(--red),var(--blue),var(--red));
+      background-size:300% 300%;
+      opacity:0;transition:opacity .3s;pointer-events:none;z-index:5;
+      animation:borderSpin 4s linear infinite paused;
+    }
+    .v-card:hover::after{opacity:1;animation-play-state:running;}
+    @keyframes borderSpin{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+
+    /* inner mask to see through gradient border */
+    .v-card::before{
+      content:'';position:absolute;inset:1px;border-radius:3px;
+      background:var(--surface);z-index:5;pointer-events:none;
+      opacity:0;transition:opacity .3s;
+    }
+    .v-card:hover{
+      box-shadow:0 0 0 1px var(--red),
+                 0 12px 40px var(--red-glow),
+                 0 12px 40px var(--blue-glow);
+      transform:translateY(-4px) scale(1.01);
+    }
+
+    .v-card video{
+      position:absolute;top:0;left:0;width:100%;height:100%;
+      object-fit:cover;object-position:center;display:block;
+      transition:transform .5s ease;
+    }
+    .v-card:hover video{transform:scale(1.06);}
+
+    .v-overlay{position:absolute;inset:0;z-index:1;
+      background:linear-gradient(to top,rgba(4,5,15,.95) 0%,rgba(0,0,0,.25) 45%,transparent 100%);
+      opacity:0;transition:opacity .3s;}
+    .v-card:hover .v-overlay{opacity:1;}
+
+    /* badge */
+    .v-badge{position:absolute;top:12px;left:12px;z-index:3;
+      padding:4px 10px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+      background:linear-gradient(135deg,var(--red),var(--blue));color:#fff;border-radius:2px;
+      opacity:0;transform:translateY(-8px);transition:opacity .3s,transform .3s;}
+    .v-card:hover .v-badge{opacity:1;transform:translateY(0);}
+
+    /* info */
+    .v-info{position:absolute;bottom:0;left:0;right:0;padding:20px 16px;z-index:2;
+      transform:translateY(10px);transition:transform .35s;}
+    .v-card:hover .v-info{transform:translateY(0);}
+    .v-tag{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-light);margin-bottom:5px;}
+    .v-title{font-size:14px;font-weight:700;color:var(--white);line-height:1.35;letter-spacing:-.01em;}
+    .v-meta{display:flex;align-items:center;gap:10px;margin-top:6px;}
+    .v-dur{font-size:9px;font-weight:600;letter-spacing:.1em;color:var(--silver-dim);}
+
+    /* play icon */
+    .v-play{position:absolute;top:50%;left:50%;
+      transform:translate(-50%,-50%) scale(.7);
+      width:60px;height:60px;
+      border:2px solid rgba(255,255,255,.7);border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(232,25,44,.2);backdrop-filter:blur(8px);
+      opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;z-index:3;
+      box-shadow:0 0 28px var(--red-glow),0 0 28px var(--blue-glow);}
+    .v-card:hover .v-play{opacity:1;transform:translate(-50%,-50%) scale(1);}
+
+    /* ─── FIXED VERTICAL FULLSCREEN OVERLAY MODAL ─── */
+    #video-modal {
+      position: fixed; inset: 0; z-index: 99999;
+      background: rgba(4, 5, 15, 0.85);
+      backdrop-filter: blur(20px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #video-modal.active { opacity: 1; pointer-events: auto; }
+    
+    .modal-container {
+      position: relative;
+      height: 90vh; aspect-ratio: 9/16;
+      max-width: 95vw;
+      background: #000;
+      border-radius: 12px; overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 24px 70px rgba(0,0,0,0.8), 0 0 50px var(--blue-glow2);
+      transform: scale(0.9) translateY(20px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #video-modal.active .modal-container { transform: scale(1) translateY(0); }
+
+    #video-modal video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .modal-close {
+      position: absolute; top: 24px; right: 24px; z-index: 10;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.2s; backdrop-filter: blur(8px);
+    }
+    .modal-close:hover { background: var(--red); border-color: transparent; transform: scale(1.05); }
+
+    /* ─── REELS SECTION ─── */
+    #reels-section{padding:64px 48px;border-top:1px solid var(--border);position:relative;z-index:1;}
+    .section-label{font-size:10px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;
+      color:var(--red-light);margin-bottom:40px;display:flex;align-items:center;gap:12px;}
+    .section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--red-dim),transparent);}
+
+    .section-heading{font-size:clamp(36px,5vw,68px);font-weight:900;
+      line-height:.9;letter-spacing:-.03em;margin-bottom:10px;
+      background:linear-gradient(135deg,var(--white),var(--blue-light),var(--red-light));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .section-sub{font-size:13px;color:var(--silver-dim);margin-bottom:44px;}
+
+    .reels-strip{display:flex;gap:20px;overflow-x:auto;padding-bottom:16px;
+      scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
+    .reels-strip::-webkit-scrollbar{height:3px;}
+    .reels-strip::-webkit-scrollbar-track{background:var(--border);}
+    .reels-strip::-webkit-scrollbar-thumb{background:linear-gradient(90deg,var(--red-dim),var(--blue-dim));}
+
+    .reel-card{flex:0 0 auto;width:220px;scroll-snap-align:start;position:relative;cursor:pointer;}
+
+    .reel-phone{width:220px;height:390px;background:#0a0b1a;border-radius:32px;
+      border:2px solid var(--border2);position:relative;overflow:hidden;
+      box-shadow:0 20px 60px rgba(0,0,0,.7),0 0 24px var(--red-glow2);
+      transition:transform .35s,box-shadow .35s,border-color .35s;}
+    .reel-card:hover .reel-phone{
+      transform:translateY(-10px) scale(1.02);
+      border-color:var(--blue-light);
+      box-shadow:0 32px 80px rgba(0,0,0,.8),0 0 40px var(--blue-glow),0 0 24px var(--red-glow);}
+
+    .reel-phone::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);
+      width:68px;height:5px;background:#111428;border-radius:3px;z-index:10;}
+
+    .reel-phone video{width:100%;height:100%;object-fit:cover;display:block;border-radius:30px;}
+    .reel-phone-overlay{position:absolute;inset:0;
+      background:linear-gradient(to top,rgba(4,5,15,.82) 0%,transparent 55%);
+      border-radius:30px;pointer-events:none;}
+
+    .reel-chrome{position:absolute;bottom:20px;left:14px;right:14px;z-index:5;}
+    .reel-user{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+    .reel-avatar{width:28px;height:28px;border-radius:50%;
+      background:linear-gradient(135deg,var(--red),var(--blue));
+      border:1.5px solid var(--blue-light);flex-shrink:0;overflow:hidden;}
+    .reel-avatar img{width:100%;height:100%;object-fit:cover;}
+    .reel-username{font-size:12px;font-weight:700;color:#fff;letter-spacing:.02em;}
+    .reel-caption{font-size:11px;color:rgba(255,255,255,.8);line-height:1.4;margin-bottom:8px;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+
+    .reel-actions{position:absolute;right:10px;bottom:60px;
+      display:flex;flex-direction:column;align-items:center;gap:18px;z-index:5;}
+    .reel-action-btn{display:flex;flex-direction:column;align-items:center;gap:3px;color:#fff;}
+    .reel-action-btn svg{width:22px;height:22px;}
+    .reel-action-btn span{font-size:10px;font-weight:600;}
+
+    .reel-play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:4;border-radius:30px;}
+    .reel-play-btn{width:56px;height:56px;
+      border:2px solid rgba(255,255,255,.7);border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(232,25,44,.2);backdrop-filter:blur(8px);
+      transition:opacity .3s;box-shadow:0 0 24px var(--red-glow);}
+    .reel-card.playing .reel-play-overlay{opacity:0;}
+
+    .reel-label-text{margin-top:14px;text-align:center;}
+    .reel-label-title{font-size:13px;font-weight:700;color:var(--white);}
+    .reel-label-cat{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-light);margin-top:3px;}
+
+    /* CONTACT */
+    #contact{margin:4px 48px 0;padding:56px;
+      background:var(--surface);border:1px solid var(--border2);
+      display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;
+      position:relative;overflow:hidden;z-index:1;
+      box-shadow:0 0 60px var(--red-glow2),0 0 60px var(--blue-glow2);}
+    #contact::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+      background:linear-gradient(90deg,transparent,var(--red),var(--blue),var(--red),transparent);}
+    #contact::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+      background:linear-gradient(90deg,transparent,var(--blue),var(--red),var(--blue),transparent);opacity:.5;}
+
+    .contact-left{font-size:clamp(32px,4.5vw,60px);font-weight:900;line-height:.9;letter-spacing:-.03em;
+      background:linear-gradient(135deg,var(--white),var(--silver));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .contact-left span{
+      background:linear-gradient(135deg,var(--red-light),var(--blue-light));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+    /* BUTTON */
+    .btn-primary{display:inline-flex;align-items:center;gap:10px;padding:15px 36px;
+      background:linear-gradient(135deg,var(--red),var(--blue));
+      color:#fff;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+      text-decoration:none;cursor:pointer;border:none;border-radius:2px;
+      position:relative;overflow:hidden;
+      transition:transform .2s,box-shadow .3s;
+      box-shadow:0 4px 24px var(--red-glow),0 4px 24px var(--blue-glow);}
+    .btn-primary::before{content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,var(--red-light),var(--blue-light));
+      opacity:0;transition:opacity .3s;}
+    .btn-primary span,.btn-primary svg{position:relative;z-index:1;}
+    .btn-primary svg{transition:transform .3s;}
+    .btn-primary:hover::before{opacity:1;}
+    .btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 36px var(--red-glow),0 10px 36px var(--blue-glow);}
+    .btn-primary:hover svg{transform:translateX(4px);}
+
+    /* FOOTER */
+    footer{padding:24px 48px;border-top:1px solid var(--border);margin-top:4px;
+      display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
+      position:relative;z-index:1;}
+    .footer-copy{font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--silver-dim);}
+    .footer-count{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+      background:linear-gradient(90deg,var(--red-light),var(--blue-light));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+    /* REVEAL */
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease;}
+    .reveal.visible{opacity:1;transform:none;}
+
+    @keyframes fadeUp  {from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+    @keyframes fadeDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+
+    /* RESPONSIVE */
+    @media(max-width:1100px){#gallery{grid-template-columns:repeat(3,1fr);}}
+    @media(max-width:860px){
+      nav,#page-header,#filter-bar,#gallery,#reels-section,footer{padding-left:20px;padding-right:20px;}
+      #contact{margin:4px 0 0;padding:36px 20px;}
+      #page-header{padding-top:96px;padding-bottom:36px;}
+      .ph-right{max-width:100%;}
+      #gallery{grid-template-columns:repeat(2,1fr);gap:10px;padding-top:20px;padding-bottom:20px;}
+      .modal-container { height: 80vh; }
+    }
+    @media(max-width:480px){
+      #gallery{grid-template-columns:repeat(2,1fr);gap:6px;}
+      .reel-card{width:175px;}.reel-phone{width:175px;height:310px;}
+      #reels-section{padding:40px 20px;}
+    }
+    @media(max-width:360px){
+      #gallery{grid-template-columns:1fr 1fr;gap:4px;}
+      .reel-card{width:150px;}.reel-phone{width:150px;height:265px;}
+    }
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
+  </style>
+</head>
+<body>
+
+<div class="orb orb-r"></div>
+<div class="orb orb-b"></div>
+<div id="particles"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="logo-mark">JB</div>
+    <span class="nav-logo">Devansh Bhavsar</span>
+  </a>
+  <a href="index.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M13 7H1M7 13L1 7l6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back
+  </a>
+</nav>
+
+<div id="page-header">
+  <div class="ph-left">
+    <p class="ph-eyebrow">Portfolio</p>
+    <h1>My<br>Work</h1>
+  </div>
+  <p class="ph-right"><strong>8 vertical videos</strong> — hover to preview, click to watch vertical fullscreen.</p>
+</div>
+
+<div id="filter-bar">
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="brand">Brand Films</button>
+  <button class="filter-btn" data-filter="social">Social Content</button>
+  <button class="filter-btn" data-filter="youtube">YouTube</button>
+  <button class="filter-btn" data-filter="reel">Reels</button>
+</div>
+
+<div class="tri-divider"></div>
+
+<div id="gallery">
+
+  <div class="v-card" data-cat="brand">
+    <video src="video/d1.mp4" preload="metadata" muted loop playsinline></video>
+    <div class="v-overlay"></div>
+    <div class="v-badge">Brand Film</div>
+    <div class="v-play"><svg viewBox="0 0 20 20" fill="white" width="22" height="22"><path d="M5 4l12 6-12 6V4z"/></svg></div>
+    <div class="v-info">
+      <div class="v-tag">Brand Film</div>
+      <div class="v-title">Product Launch</div>
+      <div class="v-meta"><span class="v-dur" id="dur-1">—</span><span class="v-dur">· 2024</span></div>
+    </div>
+  </div>
+
+  <div class="v-card" data-cat="brand">
+    <video src="video/d2.mp4" preload="metadata" muted loop playsinline></video>
+    <div class="v-overlay"></div>
+    <div class="v-badge">Brand Film</div>
+    <div class="v-play"><svg viewBox="0 0 20 20" fill="white" width="22" height="22"><path d="M5 4l12 6-12 6V4z"/></svg></div>
+    <div class="v-info">
+      <div class="v-tag">Brand Film</div>
+      <div class="v-title">Product Launch</div>
+      <div class="v-meta"><span class="v-dur" id="dur-2">—</span><span class="v-dur">· 2024</span></div>
+    </div>
+  </div>
+
+  <div class="v-card" data-cat="brand">
+    <video src="video/d3.mp4" preload="metadata" muted loop playsinline></video>
+    <div class="v-overlay"></div>
+    <div class="v-badge">Brand Film</div>
+    <div class="v-play"><svg viewBox="0 0 20 20" fill="white" width="22" height="22"><path d="M5 4l12 6-12 6V4z"/></svg></div>
+    <div class="v-info">
+      <div class="v-tag">Brand Film</div>
+      <div class="v-title">Product Launch</div>
+      <div class="v-meta"><span class="v-dur" id="dur-3">—</span><span class="v-dur">· 2024</span></div>
+    </div>
+  </div>
+
+  <div class="v-card" data-cat="brand">
+    <video src="video/d4.mp4" preload="metadata" muted loop playsinline></video>
+    <div class="v-overlay"></div>
+    <div class="v-badge">Brand Film</div>
+    <div class="v-play"><svg viewBox="0 0 20 20" fill="white" width="22" height="22"><path d="M5 4l12 6-12 6V4z"/></svg></div>
+    <div class="v-info">
+      <div class="v-tag">Brand Film</div>
+      <div class="v-title">Product Launch</div>
+      <div class="v-meta"><span class="v-dur" id="dur-4">—</span><span class="v-dur">· 2024</span></div>
+    </div>
+  </div>
+
+  <div class="v-card" data-cat="reel">
+    <video src="video/d5.mp4" preload="metadata" muted loop playsinline></video>
+    <div class="v-overlay"></div>
+    <div class="v-badge">Reel</div>
+    <div class="v-play"><svg viewBox="0 0 20 20" fill="white" width="22" height="22"><path d="M5 4l12 6-12 6V4z"/></svg></div>
+    <div class="v-info">
+      <div class="v-tag">Instagram Reel</div>
+      <div class="v-title">Podcast 1</div>
+      <div class="v-meta"><span class="v-dur" id="dur-5">—</span><span class="v-dur">· 2024</span></div>
+    </div>
+  </div>
+
+  <div class="v-card" data-cat="youtube">
+    <video src="video/d6.MP4" preload="metadata" muted loop playsinline></video>
+    <div class="v-overlay"></div>
+    <div class="v-badge">YouTube</div>
+    <div class="v-play"><svg viewBox="0 0 20 20" fill="white" width="22" height="22"><path d="M5 4l12 6-12 6V4z"/></svg></div>
+    <div class="v-info">
+      <div class="v-tag">YouTube</div>
+      <div class="v-title">Typography — Ep. 12</div>
+      <div class="v-meta"><span class="v-dur" id="dur-6">—</span><span class="v-dur">· 2023</span></div>
+    </div>
+  </div>
+
+  <div class="v-card" data-cat="social">
+    <video src="video/d7.mp4" preload="metadata" muted loop playsinline></video>
+    <div class="v-overlay"></div>
+    <div class="v-badge">Social</div>
+    <div class="v-play"><svg viewBox="0 0 20 20" fill="white" width="22" height="22"><path d="M5 4l12 6-12 6V4z"/></svg></div>
+    <div class="v-info">
+      <div class="v-tag">Social Content</div>
+      <div class="v-title">Podcast 2 — Story Series</div>
+      <div class="v-meta"><span class="v-dur" id="dur-7">—</span><span class="v-dur">· 2024</span></div>
+    </div>
+  </div>
+
+  <div class="v-card" data-cat="brand">
+    <video src="video/d8.mp4" preload="metadata" muted loop playsinline></video>
+    <div class="v-overlay"></div>
+    <div class="v-badge">Brand Film</div>
+    <div class="v-play"><svg viewBox="0 0 20 20" fill="white" width="22" height="22"><path d="M5 4l12 6-12 6V4z"/></svg></div>
+    <div class="v-info">
+      <div class="v-tag">Brand Film</div>
+      <div class="v-title">Motion Graphics</div>
+      <div class="v-meta"><span class="v-dur" id="dur-8">—</span><span class="v-dur">· 2023</span></div>
+    </div>
+  </div>
+
+</div><div id="video-modal">
+  <div class="modal-close" id="modal-close-btn">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+  </div>
+  <div class="modal-container">
+    <video id="modal-video" controls playsinline></video>
+  </div>
+</div>
+
+<div class="tri-divider"></div>
+
+<section id="reels-section" class="reveal">
+  <p class="section-label">Instagram Reels</p>
+  <p class="section-heading">Short-form<br>Content</p>
+  <p class="section-sub">Tap any reel to play / pause.</p>
+
+  <div class="reels-strip" id="reels-strip">
+
+    <div class="reel-card">
+      <div class="reel-phone">
+        <video id="rv1" src="video/d1.mp4" preload="metadata" loop playsinline></video  >
+        <div class="reel-phone-overlay"></div>
+        <div class="reel-play-overlay">
+          <div class="reel-play-btn"><svg viewBox="0 0 20 20" fill="white" width="20" height="20"><path d="M5 4l12 6-12 6V4z"/></svg></div>
+        </div>
+        <div class="reel-actions">
+          <div class="reel-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span>4.2k</span>
+          </div>
+          <div class="reel-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>230</span>
+          </div>
+          <div class="reel-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            <span>Share</span>
+          </div>
+        </div>
+        <div class="reel-chrome">
+          <div class="reel-user">
+            <div class="reel-avatar"><img src="image/jatin.jpeg" onerror="this.style.display='none'" alt=""/></div>
+            <span class="reel-username">jrajput.07</span>
+          </div>
+          <div class="reel-caption">Product Launch ✂️🔥 #VideoEditor #Reels</div>
+        </div>
+      </div>
+      <div class="reel-label-text">
+        <div class="reel-label-title">Product Launch</div>
+        <div class="reel-label-cat">Instagram Reel · 2024</div>
+      </div>
+    </div>
+
+    <div class="reel-card">
+      <div class="reel-phone">
+        <video id="rv2" src="video/d2.mp4" preload="metadata" loop playsinline></video>
+        <div class="reel-phone-overlay"></div>
+        <div class="reel-play-overlay">
+          <div class="reel-play-btn"><svg viewBox="0 0 20 20" fill="white" width="20" height="20"><path d="M5 4l12 6-12 6V4z"/></svg></div>
+        </div>
+        <div class="reel-actions">
+          <div class="reel-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span>8.1k</span>
+          </div>
+          <div class="reel-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>512</span>
+          </div>
+          <div class="reel-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            <span>Share</span>
+          </div>
+        </div>
+        <div class="reel-chrome">
+          <div class="reel-user">
+            <div class="reel-avatar"><img src="image/jatin.jpeg" onerror="this.style.display='none'" alt=""/></div>
+            <span class="reel-username">jrajput.07</span>
+          </div>
+          <div class="reel-caption">Podcast 1 #podcast #Edit</div>
+        </div>
+      </div>
+      <div class="reel-label-text">
+        <div class="reel-label-title">Travel Diary — Rajasthan</div>
+        <div class="reel-label-cat">Instagram Reel · 2023</div>
+      </div>
+    </div>
+
+    <div class="reel-card">
+      <div class="reel-phone">
+        <video id="rv3" src="video/d4.mp4" preload="metadata" loop playsinline></video>
+        <div class="reel-phone-overlay"></div>
+        <div class="reel-play-overlay">
+          <div class="reel-play-btn"><svg viewBox="0 0 20 20" fill="white" width="20" height="20"><path d="M5 4l12 6-12 6V4z"/></svg></div>
+        </div>
+        <div class="reel-actions">
+          <div class="reel-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span>3.5k</span>
+          </div>
+          <div class="reel-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>178</span>
+          </div>
+          <div class="reel-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            <span>Share</span>
+          </div>
+        </div>
+        <div class="reel-chrome">
+          <div class="reel-user">
+            <div class="reel-avatar"><img src="image/jatin.jpeg" onerror="this.style.display='none'" alt=""/></div>
+            <span class="reel-username">jrajput.07</span>
+          </div>
+          <div class="reel-caption">Podcast 2 #ContentCreator</div>
+        </div>
+      </div>
+      <div class="reel-label-text">
+        <div class="reel-label-title">CaféRoast Stories</div>
+        <div class="reel-label-cat">Social Content · 2024</div>
+      </div>
+    </div>
+
+    <div class="reel-card">
+      <div class="reel-phone">
+        <video id="rv4" src="video/8.mp4" preload="metadata" loop playsinline></video>
+        <div class="reel-phone-overlay"></div>
+        <div class="reel-play-overlay">
+          <div class="reel-play-btn"><svg viewBox="0 0 20 20" fill="white" width="20" height="20"><path d="M5 4l12 6-12 6V4z"/></svg></div>
+        </div>
+        <div class="reel-actions">
+          <div class="reel-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span>12k</span>
+          </div>
+          <div class="reel-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>890</span>
+          </div>
+          <div class="reel-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            <span>Share</span>
+          </div>
+        </div>
+        <div class="reel-chrome">
+          <div class="reel-user">
+            <div class="reel-avatar"><img src="image/jatin.jpeg" onerror="this.style.display='none'" alt=""/></div>
+            <span class="reel-username">jrajput.07</span>
+          </div>
+          <div class="reel-caption">Instagram Reels 1 💪 Cuts that hit different #Fitness</div>
+        </div>
+      </div>
+      <div class="reel-label-text">
+        <div class="reel-label-title">GymSpark Motivation</div>
+        <div class="reel-label-cat">Social Content · 2024</div>
+      </div>
+    </div>
+
+    <div class="reel-card">
+      <div class="reel-phone">
+        <video id="rv5" src="video/5.mp4" preload="metadata" loop playsinline></video>
+        <div class="reel-phone-overlay"></div>
+        <div class="reel-play-overlay">
+          <div class="reel-play-btn"><svg viewBox="0 0 20 20" fill="white" width="20" height="20"><path d="M5 4l12 6-12 6V4z"/></svg></div>
+        </div>
+        <div class="reel-actions">
+          <div class="reel-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span>6.7k</span>
+          </div>
+          <div class="reel-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>340</span>
+          </div>
+          <div class="reel-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            <span>Share</span>
+          </div>
+        </div>
+        <div class="reel-chrome">
+          <div class="reel-user">
+            <div class="reel-avatar"><img src="image/jatin.jpeg" onerror="this.style.display='none'" alt=""/></div>
+            <span class="reel-username">jrajput.07</span>
+          </div>
+          <div class="reel-caption">Reel🎬 Brand film cut down for reels</div>
+        </div>
+      </div>
+      <div class="reel-label-text">
+        <div class="reel-label-title">Motion Graphics</div>
+        <div class="reel-label-cat">Brand Reel · 2024</div>
+      </div>
+    </div>
+
+  </div></section>
+
+<div id="contact" class="reveal">
+  <div class="contact-left">Let's Work<br><span>Together.</span></div>
+  <a href="mailto:jatin79rajput@gmail.com" class="btn-primary">
+    <span>Hire Me</span>
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M1 7h12M7 1l6 6-6 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+</div>
+
+<footer>
+  <span class="footer-copy">© 2024 Devansh Bhavsar</span>
+  <span class="footer-count" id="count-display">8 Projects</span>
+</footer>
+
+<script>
+  /* PARTICLES */
+  (function(){
+    const w=document.getElementById('particles');
+    for(let i=0;i<20;i++){
+      const p=document.createElement('div');
+      p.className='p-dot';
+      const size=Math.random()*5+2;
+      const isRed=Math.random()>.5;
+      p.style.cssText=`
+        width:${size}px;height:${size}px;left:${Math.random()*100}%;
+        background:${isRed?'rgba(232,25,44,.9)':'rgba(21,101,255,.9)'};
+        box-shadow:0 0 ${size*3}px ${isRed?'rgba(232,25,44,.7)':'rgba(21,101,255,.7)'};
+        animation-duration:${Math.random()*14+10}s;
+        animation-delay:${Math.random()*14}s;
+      `;
+      w.appendChild(p);
+    }
+  })();
+
+  /* CURSOR */
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  if(window.matchMedia('(pointer:fine)').matches){
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+    (function t(){cursor.style.left=mx+'px';cursor.style.top=my+'px';
+      rx+=(mx-rx)*.14;ry+=(my-ry)*.14;ring.style.left=rx+'px';ring.style.top=ry+'px';
+      requestAnimationFrame(t);})();
+  } else {cursor.style.display='none';ring.style.display='none';document.body.style.cursor='auto';}
+
+  /* SCROLL REVEAL */
+  const io=new IntersectionObserver(entries=>entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}
+  }),{threshold:.06});
+  document.querySelectorAll('.v-card,.reveal').forEach((el,i)=>{
+    el.style.transitionDelay=(i*.05)+'s';
+    io.observe(el);
+  });
+
+  /* DURATION LABELS */
+  document.querySelectorAll('.v-card video').forEach((vid,i)=>{
+    const durEl=document.getElementById('dur-'+(i+1));
+    vid.addEventListener('loadedmetadata',()=>{
+      if(durEl&&vid.duration&&isFinite(vid.duration)){
+        const m=Math.floor(vid.duration/60);
+        const s=Math.floor(vid.duration%60).toString().padStart(2,'0');
+        durEl.textContent=m+':'+s;
+      }
+    });
+  });
+
+  /* MODAL VERTICAL MANAGEMENT LOOPS */
+  const modal = document.getElementById('video-modal');
+  const modalVid = document.getElementById('modal-video');
+  const closeBtn = document.getElementById('modal-close-btn');
+
+  function openVerticalVideo(videoSrc) {
+    modalVid.src = videoSrc;
+    modalVid.muted = false;
+    modal.classList.add('active');
+    modalVid.play().catch(()=>{});
+  }
+
+  function closeVerticalVideo() {
+    modal.classList.remove('active');
+    modalVid.pause();
+    modalVid.src = "";
+  }
+
+  closeBtn.addEventListener('click', closeVerticalVideo);
+  modal.addEventListener('click', (e) => {
+    if(e.target === modal) closeVerticalVideo();
+  });
+
+  /* GALLERY: hover=play, leave=pause, click=vertical overlay popup */
+  document.querySelectorAll('.v-card').forEach(card=>{
+    const vid=card.querySelector('video');
+    card.addEventListener('mouseenter',()=>{vid.play().catch(()=>{});ring.style.width='64px';ring.style.height='64px';});
+    card.addEventListener('mouseleave',()=>{vid.pause();vid.currentTime=0;ring.style.width='38px';ring.style.height='38px';});
+    card.addEventListener('click',()=>{
+      openVerticalVideo(vid.src);
+    });
+  });
+
+  /* FILTER */
+  const filterBtns=document.querySelectorAll('.filter-btn');
+  const cards=document.querySelectorAll('.v-card');
+  const countEl=document.getElementById('count-display');
+  filterBtns.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      filterBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f=btn.dataset.filter;let n=0;
+      cards.forEach(c=>{
+        const show=f==='all'||c.dataset.cat===f;
+        c.classList.toggle('hidden',!show);
+        if(show)n++;
+      });
+      countEl.textContent=n+' Project'+(n!==1?'s':'');
+    });
+  });
+
+  /* REELS: tap to play/pause */
+  document.querySelectorAll('.reel-card').forEach(card=>{
+    const vid=card.querySelector('video');
+    card.addEventListener('click',()=>{
+      if(vid.paused){
+        document.querySelectorAll('#reels-strip video').forEach(v=>{
+          if(v!==vid){v.pause();v.closest('.reel-card').classList.remove('playing');}
+        });
+        vid.play().catch(()=>{});card.classList.add('playing');
+      } else {vid.pause();card.classList.remove('playing');}
+    });
+  });
+</script>
+</body>
+</html>
